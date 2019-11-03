@@ -1,40 +1,39 @@
-cost = [4,5,1,2,3]
-#cost = {"copy":1}
+cost = {"copy":0,"replace":1,"twiddle":1,"delete":1,"insert":1}
 
 def edit_distance(x,y):
     m = len(x)
     n = len(y)
     c =  [[0 for j in range(n+1)] for i in range(m+1)]
-    op = [["0" for j in range(n+1)] for i in range(m+1)]
+    op = [["" for j in range(n+1)] for i in range(m+1)]
 
     for i in range(m+1):
-        c[i][0] = i * cost[0]
+        c[i][0] = i * cost["delete"]
         op[i][0] = "delete"
     for j in range(n+1):
-        c[0][j] = j * cost[1]
+        c[0][j] = j * cost["insert"]
         op[0][j] = "insert"
     for i in range(1,m+1):
         for j in range(1,n+1):
             c[i][j] = 10000
             #Se xi e yj sono uguali -> copy
             if x[i-1] == y[j-1]:
-                c[i][j] = c[i-1][j-1] + cost[2]
+                c[i][j] = c[i-1][j-1] + cost["copy"]
                 op[i][j] = "copy"
             #Se xi e yi sono diversi e il costo -> replace
-            if x[i-1] != y[j-1] and c[i-1][j-1] + cost[3] < c[i][j]:
-                c[i][j] = c[i-1][j-1] + cost[3]
+            if x[i-1] != y[j-1] and c[i-1][j-1] + cost["replace"] < c[i][j]:
+                c[i][j] = c[i-1][j-1] + cost["replace"]
                 op[i][j] = "replace"
             #Se xi e yi sono diversi e xi-1 = yi e yi-1 = xi -> twiddle
-            if i >= 2 and j >=2 and x[i-1] == y[j-2] and x[i-2] == y[j-1] and c[i-2][j-2] + cost[4] < c[i][j]:
-                c[i][j] = c[i-2][j-2] + cost[4]
+            if i >= 2 and j >=2 and x[i-1] == y[j-2] and x[i-2] == y[j-1] and c[i-2][j-2] + cost["twiddle"] < c[i][j]:
+                c[i][j] = c[i-2][j-2] + cost["twiddle"]
                 op[i][j] = "twiddle"
             #Se xi e yi sono diversi -> delete
-            if c[i-1][j] + cost[0] < c[i][j]:
-                c[i][j] = c[i-1][j] + cost[0]
+            if c[i-1][j] + cost["delete"] < c[i][j]:
+                c[i][j] = c[i-1][j] + cost["delete"]
                 op[i][j] = "delete"
             #SE xi e yi sono diversi -> insert
-            if c[i][j-1] + cost[1] < c[i][j]:
-                c[i][j] = c[i][j-1] + cost[1]
+            if c[i][j-1] + cost["insert"] < c[i][j]:
+                c[i][j] = c[i][j-1] + cost["insert"]
                 op[i][j] = "insert"
     #print c
     return c,op
@@ -60,18 +59,25 @@ def createDictionary(set, n):
 def findFromSet(set, daCercare):
     print "Cerco in set :", daCercare
     min = 100000
+    vicina = ""
+    op = None
+    #Matrice delle operazioni ottime
+    optOp = None
     if len(set) != 0:
         for parola in set:
             dist,op = distance(daCercare, parola)
             if dist < min :
                 min = dist
+                if min == 0:
+                    print "Parola trovata!"
+                    # op_sequence(optOp, len(daCercare), len(vicina))
+                    return True
+                optOp = op
                 vicina = parola
-        if min == 0 :
-            #print "Parola trovata!"
-            return True
-    #print "Parola non trovata!"
+    print "Parola non trovata!"
     print "Parola piu' vicina :" , vicina , " - distanza :" , min
-    op_sequence(op,len(vicina),len(parola))
+    op_sequence(optOp, len(daCercare), len(vicina))
+    print
     return False
 
 def findFromNGram(d, daCercare, n):
@@ -84,7 +90,8 @@ def findFromNGram(d, daCercare, n):
             #print d[nGram]
             s = s.union(d[nGram])
     #print s
-    findFromSet(s, daCercare)
+    if len(s) > 0:
+        findFromSet(s, daCercare)
 
 def n_grams(parola , n):
     output = []
@@ -98,6 +105,7 @@ def distance(x, y):
 
 def op_sequence(op,i,j):
     if i==0 and j==0:
+        print "Edit sequence: ",
         return
     if op[i][j] =="copy" or op[i][j]=="replace":
         k=i-1
@@ -112,7 +120,7 @@ def op_sequence(op,i,j):
         k=i
         l=j-1
     op_sequence(op,k,l)
-    print op[i][j]
+    print op[i][j],
 
 '''
 if __name__ == '__main__':

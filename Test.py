@@ -24,10 +24,10 @@ if __name__ == '__main__':
     f1 = open('280000parole.txt', 'r')
     f2 = open('660000parole.txt', 'r')
 
-    parola1 = "agoritmo"
-    parola2 = "tbella"
+    parola1 = "cionidario"
+    parola2 = "cnosumo"
 
-    print "Test su lessico di 280000 parole"
+    print "[Test su lessico di 280000 parole]"
     set1 = createSet(f1)
 
     print "Ricerca parola :", parola1
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     testRicercaNGram(set1, parola2, 3)
     testRicercaNGram(set1, parola2, 4)
 
-    print "Test su lessico di 660000 parole"
+    print "[Test su lessico di 660000 parole]"
     set2 = createSet(f2)
 
     print "Ricerca parola :", parola1
