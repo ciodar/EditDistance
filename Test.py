@@ -8,14 +8,15 @@ def testRicercaEdit(set, daCercare):
     start = timer()
     findFromSet(set, daCercare)
     end = timer()
-    print "Tempo ricerca senza n-gram :", end-start
+    print "\tTempo ricerca senza n-gram :", end-start
 
 def testRicercaNGram(set, daCercare, n):
+    print "ricerca ",n,"-gram"
     d = createDictionary(set, n)
     start = timer()
     findFromNGram(d, daCercare, n)
     end = timer()
-    print "Tempo ricerca", n,"- gram :", end-start
+    print "\tTempo ricerca", n,"- gram :", end-start
 
 
 
@@ -24,8 +25,8 @@ if __name__ == '__main__':
     f1 = open('280000parole.txt', 'r')
     f2 = open('660000parole.txt', 'r')
 
-    parola1 = "cionidario"
-    parola2 = "cnosumo"
+    parola1 = "sommario"
+    parola2 = "agrolitmo"
 
     print "[Test su lessico di 280000 parole]"
     set1 = createSet(f1)
@@ -48,7 +49,7 @@ if __name__ == '__main__':
     set2 = createSet(f2)
 
     print "Ricerca parola :", parola1
-    testRicercaEdit(set2, "algoritmo")
+    testRicercaEdit(set2, parola1)
 
     testRicercaNGram(set2, parola1, 2)
     testRicercaNGram(set2, parola1, 3)

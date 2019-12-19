@@ -57,7 +57,7 @@ def createDictionary(set, n):
     return d
 
 def findFromSet(set, daCercare):
-    print "Cerco in set :", daCercare
+    print "\tCerco in set :", daCercare
     min = 100000
     vicina = ""
     op = None
@@ -69,13 +69,13 @@ def findFromSet(set, daCercare):
             if dist < min :
                 min = dist
                 if min == 0:
-                    print "Parola trovata!"
+                    print "\tParola trovata!"
                     # op_sequence(optOp, len(daCercare), len(vicina))
                     return True
                 optOp = op
                 vicina = parola
-    print "Parola non trovata!"
-    print "Parola piu' vicina :" , vicina , " - distanza :" , min
+    print "\tParola non trovata!"
+    print "\tParola piu' vicina :" , vicina , " - distanza :" , min
     op_sequence(optOp, len(daCercare), len(vicina))
     print
     return False
@@ -89,7 +89,7 @@ def findFromNGram(d, daCercare, n):
             #print "D ha", nGram
             #print d[nGram]
             s = s.union(d[nGram])
-    #print s
+    print "\tDimensione dizionario",n,"-gram:", len(s)
     if len(s) > 0:
         findFromSet(s, daCercare)
 
@@ -105,7 +105,7 @@ def distance(x, y):
 
 def op_sequence(op,i,j):
     if i==0 and j==0:
-        print "Edit sequence: ",
+        print "\tEdit sequence: ",
         return
     if op[i][j] =="copy" or op[i][j]=="replace":
         k=i-1
