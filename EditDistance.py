@@ -1,3 +1,6 @@
+from collections import Mapping, Container
+from sys import getsizeof
+
 cost = {"copy":0,"replace":1,"twiddle":1,"delete":1,"insert":1}
 
 def edit_distance(x,y):
@@ -89,7 +92,8 @@ def findFromNGram(d, daCercare, n):
             #print "D ha", nGram
             #print d[nGram]
             s = s.union(d[nGram])
-    print "\tDimensione dizionario",n,"-gram:", len(s)
+    print "\tNumero di parole nel dizionario",n,"-gram:", len(s)
+    print "\tOccupazione parole dizionario", n, "-gram:", deep_getsizeof(s,set())/1024, "KB"
     if len(s) > 0:
         findFromSet(s, daCercare)
 
@@ -122,6 +126,38 @@ def op_sequence(op,i,j):
     op_sequence(op,k,l)
     print op[i][j],
 
+"""Find the memory footprint of a Python object
+
+This is a recursive function that drills down a Python object graph
+like a dictionary holding nested dictionaries with lists of lists
+and tuples and sets.
+
+The sys.getsizeof function does a shallow size of only. It counts each
+object inside a container as pointer only regardless of how big it
+really is.
+
+:param o: the object
+:param ids:
+:return:
+"""
+def deep_getsizeof(o, ids):
+    d = deep_getsizeof
+    if id(o) in ids:
+        return 0
+
+    r = getsizeof(o)
+    ids.add(id(o))
+
+    if isinstance(o, str) or isinstance(0, unicode):
+        return r
+
+    if isinstance(o, Mapping):
+        return r + sum(d(k, ids) + d(v, ids) for k, v in o.iteritems())
+
+    if isinstance(o, Container):
+        return r + sum(d(x, ids) for x in o)
+
+    return r
 '''
 if __name__ == '__main__':
 
