@@ -25,8 +25,8 @@ if __name__ == '__main__':
     f1 = open('280000parole.txt', 'r')
     f2 = open('660000parole.txt', 'r')
 
-    parole_presenti = ["sommario","intelligenza","artificiale","appello"]
-    parole_assenti = ["agrolitmo","lorem","ipsum","dolor","aniene"]
+    parole_presenti = ["sommario","appello","idoneo","artificiale","algoritmo"]
+    parole_assenti = ["agrolitmo","lorem","kruskal","dolor","prim"]
 
     print "[Test su lessico di 280000 parole]"
     set1 = createSet(f1)

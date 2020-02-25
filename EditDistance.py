@@ -126,20 +126,6 @@ def op_sequence(op,i,j):
     op_sequence(op,k,l)
     print op[i][j],
 
-"""Find the memory footprint of a Python object
-
-This is a recursive function that drills down a Python object graph
-like a dictionary holding nested dictionaries with lists of lists
-and tuples and sets.
-
-The sys.getsizeof function does a shallow size of only. It counts each
-object inside a container as pointer only regardless of how big it
-really is.
-
-:param o: the object
-:param ids:
-:return:
-"""
 def deep_getsizeof(o, ids):
     d = deep_getsizeof
     if id(o) in ids:
